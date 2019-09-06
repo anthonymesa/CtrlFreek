@@ -10,12 +10,12 @@ PROJECT_FOLDER_NAME:
      (expected output folder)
    src:
      (the .java source code)
-    
+```bash
 PROJECT_FOLDER_NAME/
 ├───lib
 ├───src
 └───bin
-   
+```
 Just drop this script into PROJECT_FOLDER_NAME and then run it, easy peasy.
 
 So much easier than wondering why eclipse or netbeans is throwing you some fucky error.
