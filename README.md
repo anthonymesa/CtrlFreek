@@ -10,6 +10,11 @@ PROJECT_FOLDER_NAME:
      (expected output folder)
    src:
      (the .java source code)
+    
+PROJECT_FOLDER_NAME/
+├───lib
+├───src
+└───bin
    
 Just drop this script into PROJECT_FOLDER_NAME and then run it, easy peasy.
 
