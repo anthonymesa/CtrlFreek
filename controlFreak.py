@@ -7,92 +7,155 @@
 # Anthony Mesa
 # 
 
-import subprocess
-from subprocess import Popen
-import os
+from subprocess import call
+from os import remove
+from os import rmdir
+from shutil import rmtree
+from os import mkdir
+from os.path import exists
 import time
 import platform
 import glob
-import os.path
-import shutil
 
-name = "Application"
-
+# Name of the main class file for the application
+applicationName = "Application"
 MANIFEST_NAME = "Manifest.txt"
 
-libraries = 'lib/*.jar'
-libList = glob.glob(libraries)
-manifestLibList = " ".join(libList)
+libFolder = "lib/*.jar"
+librariesList = glob.glob(libFolder)
 
-source = 'src/*.java'
-sourceList = glob.glob(source)
+srcFolder = "src/*.java"
+sourcesList = glob.glob(srcFolder)
 
-destination = "bin"
+destinationFolder = "out/"
 
-#=============================================================
-print("------------------------------------------------------")
-print("--------------------CONTROL--FREAK--------------------")
-print("------------------------------------------------------")
-print("")
+choice = ""
+compileSourcesList = []
+compileLibrariesList = []
+runningLibrariesList = []
+manifestLibList = []
+manifestFolders = []
 
-direction = raw_input("Would you like to run the compiled class, or create a jar (r/j)? ")
-while (direction != "j" and direction != "r"):
-  direction = raw_input("Please type r or j: ")
+def appBegin():
 
-# determines which osBreak to us ( : vs ; ) based off of current os
-if platform.system() == "Windows":
-  print "\n", "Formatting for Windows OS", "\n"
-  osBreak = ";"
-elif platform.system() == "Darwin":
-  print "\n", "Formatting for Mac OS", "\n"
-  osBreak = ":"
-else:
-  print "\n", "Cannont format, Unknown System", "\n"
+    # 'appBegin()' begins the script, prompting the user, and then setting values
+    # based off of the folders assigned above, then it prints those lists.
 
-# join the initial lists into strings, using osBreak
-sources = osBreak.join(sourceList)
-compileLib = osBreak.join(libList)
-runLib = compileLib + osBreak + "bin"
+    print("\n\n------------------------------------------------------")
+    print("--------------------CONTROL--FREAK--------------------")
+    print("------------------------------------------------------")
+    print("")
 
-# if the compiled class exists already, remove it to get rid of possible errors
-if os.path.exists("bin/" + name + ".class"):
-    os.remove("bin/" + name + ".class")
+    # Asks user if they would like to compile and run, or compile and create jar.
+    global choice
+    choice = raw_input("Would you like to run the compiled class, or create a jar (r/j)? ")
+    while (choice != "j" and choice != "r"):
+        choice = raw_input("Please type r or j:")
 
-# user feedback to see libraries used
-print "source code", sources, "\n"
-print "compiling libraries", compileLib, "\n"
-print "running libraries", runLib, "\n"
-
-# compile the java classes
-subprocess.call(["javac", sources, "-cp", compileLib, "-d", destination])
-raw_input("press Enter to finish compiling...")
-
-# create a Manifest.txt to be used in creating the jar if the user selects j
-if (direction == "j"):
-  if os.path.exists(MANIFEST_NAME):
-    os.remove(MANIFEST_NAME)
-    f = open(MANIFEST_NAME, "wb+")
-  else:
-    f = open(MANIFEST_NAME, "wb+")
-
-  f.write("Main-Class: " + name + "\n")
-  f.write("Class-Path: " + manifestLibList + "\r\n\r\n")
-  f.flush()
-  f.close()
-  raw_input("Press Enter to finish manifest...")
-else:
-  pass
-
-# if user selected j, create jar, if not, just run the class
-if os.path.exists("bin/" + name + ".class"):
-  if (direction == "j"):
-    if os.path.exists( destination + "/" + name + ".jar"):
-      os.remove( destination + "/" + name + ".jar")
-      raw_input("Press Enter to clear old jar...")
-      subprocess.call(["jar", "-cvmf", MANIFEST_NAME, destination + "/" + name + ".jar", destination + "/" + name + ".class", "lib"])
+    # Determines which osBreak to us ( : vs ; ) based off of current os.
+    if platform.system() == "Windows":
+        print "\n", "Formatting for Windows OS", "\n"
+        osBreak = ";"
+    elif platform.system() == "Darwin":
+        print "\n", "Formatting for Mac OS", "\n"
+        osBreak = ":"
     else:
-      subprocess.call(["jar", "-cvmf", MANIFEST_NAME, destination + "/" + name + ".jar", destination + "/" + name + ".class", "lib"])
-  else:
-    subprocess.call(["java", "-cp", runLib, name])
-else:
-  print("Main class wasn't compiled.")
+        print "\n", "Cannont format, Unknown System", "\n"
+    
+    # Create a string joined by ":" or ";" (based on os) containing all list entries.
+    global compileSourcesList
+    compileSourcesList = osBreak.join(sourcesList)
+    global compileLibrariesList
+    compileLibrariesList = osBreak.join(librariesList)
+    global runningLibrariesList
+    runningLibrariesList = compileLibrariesList + osBreak + "out/bin"
+    
+    # Prints user feedback to see what libraries are used.
+    print "Source Code: ", "\n\n\t", "\n\t".join(sourcesList), "\n"
+    print "Compiling Libraries: ", "\n\n\t",  "\n\t".join(librariesList), "\n"
+    print "Running Libraries: ", runningLibrariesList, "\n"
+
+def compileSourceCode():
+
+    # Compile removes any previous classes compiled, and then compiles new classes.
+
+    # If the compiled class exists already, delete the entire bin folder.
+    print("deleting old bin directory...")
+    start_time = time.time()
+    if exists("out/bin/" + applicationName + ".class"):
+        rmtree("out/bin/")
+    print("deleted /bin in %f" % (time.time() - start_time))
+
+    sources = compileSourcesList
+    classes = compileLibrariesList
+
+    # Compile the classes
+    if not exists("out/bin/"):
+        mkdir("out/bin/")
+    call(["javac", sources, "-classpath", classes, "-d", destinationFolder + "bin"])
+
+def run():
+
+    # Runs the compiled code
+    raw_input("Press enter to run...")
+    if exists("out/bin/" + applicationName + ".class"):
+        call(["java", "-cp", runningLibrariesList, applicationName])
+    else:
+        print("\nMain class wasnt compiled, end of script.\n")
+
+def createJar():
+    
+    raw_input("\nPress enter to begin extracting jars...")
+    # Create new folders in 'out' for all of the jars in 'lib'
+    for each in librariesList:
+        # Take the location of the jar file and reformat it to a single name
+        cutoffJar = str(each)[:-4]
+        jarName = cutoffJar[4:]
+        direction = "out/" + jarName
+
+        # If the out folder for the library already exists, remove it and then unarchive the jar
+        if exists(direction):
+            rmtree(direction)
+            mkdir(direction)
+            print("Removing tree..")
+            call(["tar", "xf", each, "-C" , direction])
+        else:
+            mkdir(direction)
+            call(["tar", "xf", each, "-C" , direction])
+        manifestFolders.append(jarName + "/")
+    
+    # Creates manifest.txt. If exists, deletes manifest.txt and opens new file
+    if exists(MANIFEST_NAME):
+        remove(MANIFEST_NAME)
+        f = open(MANIFEST_NAME, "wb+")
+    else:
+        f = open(MANIFEST_NAME, "wb+")
+
+    # Creates list for classpath in manifest file
+    manifestLibList = " ".join((manifestFolders))
+    # Writes to manifest.txt
+    f.write("Main-Class: " + applicationName + "\n")
+    # f.write("Class-Path: " + manifestLibList + "\r\n\r\n")
+    f.write("Class-Path: " + "bin/ " + manifestLibList + "\r\n\r\n")
+    f.flush()
+    f.close()
+    print("Manifest complete...")
+
+    arguments = "-cvfm"
+    jar_file_name = destinationFolder + "/" + applicationName + ".jar"
+    manifest_file = MANIFEST_NAME
+    entry_point = "bin/" + applicationName
+    c_dir = "out/"
+    # files = "lib"
+    
+    call(["jar", arguments, jar_file_name, manifest_file, "-C", c_dir, "."])
+
+def main():
+    appBegin()
+    compileSourceCode()
+    if (choice == "j"):
+        createJar()
+    else:
+        run()
+
+main()
