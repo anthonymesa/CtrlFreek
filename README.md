@@ -1,9 +1,10 @@
-# ControlFreak
-ControlFreak is a script I made with python to automate the process of compiling java source code in the command line because I do not want to use any IDE's for the time being if I can help it. Taking this approach has given me better insight into what actually needs to take place for proper compiling and jar creation to take place.
+# CtrlFreek
+
+CtrlFreek is a script I made with python to automate the process of compiling java source code in the command line because I do not want to use any IDE's for the time being if I can help it. Taking this approach has given me better insight into what actually needs to take place for proper compiling and jar creation to take place.
 
 =========================================================================
 
-Out of the box, ControlFreak works with a specific file structure as outlined below:
+Out of the box, CtrlFreek works with a specific file structure as outlined below:
 
 ```bash
 PROJECT_FOLDER_NAME/
@@ -19,7 +20,7 @@ PROJECT_FOLDER_NAME/
 
 If you choose to use a seperate file structure, you will need to edit the script itself, by changing the variable paths:
 
-```bash
+```python
 # Name of the main class file for the application
 applicationName = "Application"          <- The name of the main entry-point class
 MANIFEST_NAME = "Manifest.txt"           <- The manifest that is automatically generated and then merged into the MANIFEST.MF
@@ -35,10 +36,14 @@ destinationFolder = "out/"               <- The destination folder that you woul
 
 The script should be placed at the root of the project folder. When you run the script you are prompted with:
 
-```bash
-------------------------------------------------------
---------------------CONTROL--FREAK--------------------
-------------------------------------------------------
+```python
+  .,-::::::::::::::::::::::::..    :::    .-:::::':::::::..  .,:::::: .,::::::  :::  .   
+,;;;'````';;;;;;;;'''';;;;``;;;;   ;;;    ;;;'''' ;;;;``;;;; ;;;;'''' ;;;;''''  ;;; .;;,.
+[[[            [[      [[[,/[[['   [[[    [[[,,==  [[[,/[[['  [[cccc   [[cccc   [[[[[/'  
+$$$            $$      $$$$$$c     $$'    `$$$"``  $$$$$$c    $$""""   $$""""  _$$$$,    
+`88bo,__,o,    88,     888b "88bo,o88oo,.__888     888b "88bo,888oo,__ 888oo,__"888"88o, 
+  "YUMMMMMP"   MMM     MMMM   "W" """"YUMMM"MM,    MMMM   "W" """"YUMMM""""YUMMMMMM "MMP"
+
 
 Would you like to run the compiled class, or create a jar (r/j)?
 ```
@@ -47,4 +52,6 @@ To compile and run your project, type 'r' and hit enter. To compile your class i
 
 After that you will be prompted to hit enter once or twice as it runs depending on your choice.
 
-Plans for the future:
+## Plans for the future:
+* Add Native C code inclusion into executable jar
+* Test and update as requred for compiling and archiving larger and more complicated projects
