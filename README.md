@@ -37,12 +37,9 @@ destinationFolder = "out/"               #<- The destination folder that you wou
 The script should be placed at the root of the project folder. When you run the script you are prompted with:
 
 ```
-  .,-::::::::::::::::::::::::..    :::    .-:::::':::::::..  .,:::::: .,::::::  :::  .  
- ,;;;'````';;;;;;;;'''';;;;``;;;;   ;;;    ;;;'''' ;;;;``;;;; ;;;;'''' ;;;;''''  ;;; .;;,.
- [[[            [[      [[[,/[[['   [[[    [[[,,==  [[[,/[[['  [[cccc   [[cccc   [[[[[/'  
- $$$            $$      $$$$$$c     $$'    `$$$"``  $$$$$$c    $$""""   $$""""  _$$$$,    
- `88bo,__,o,    88,     888b "88bo,o88oo,.__888     888b "88bo,888oo,__ 888oo,__"888"88o, 
-  "YUMMMMMP"   MMM     MMMM   "W" """"YUMMM"MM,    MMMM   "W" """"YUMMM""""YUMMMMMM "MMP"
+_______ _______  ______        _______  ______ _______ _______ _     _
+|          |    |_____/ |      |______ |_____/ |______ |______ |____/ 
+|_____     |    |    \_ |_____ |       |    \_ |______ |______ |    \_
 
 
 Would you like to run the compiled class, or create a jar (r/j)?
