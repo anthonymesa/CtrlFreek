@@ -22,16 +22,16 @@ If you choose to use a seperate file structure, you will need to edit the script
 
 ```python
 # Name of the main class file for the application
-applicationName = "Application"          <- The name of the main entry-point class
-MANIFEST_NAME = "Manifest.txt"           <- The manifest that is automatically generated and then merged into the MANIFEST.MF
+applicationName = "Application"          $<- The name of the main entry-point class
+MANIFEST_NAME = "Manifest.txt"           $<- The manifest that is automatically generated and then merged into the MANIFEST.MF
 
-libFolder = "lib/*.jar"                  <- The folder containing all of your downloaded .jar libraries
+libFolder = "lib/*.jar"                  $<- The folder containing all of your downloaded .jar libraries
 librariesList = glob.glob(libFolder)
 
-srcFolder = "src/*.java"                 <- The folder containing all of your .java source code
+srcFolder = "src/*.java"                 $<- The folder containing all of your .java source code
 sourcesList = glob.glob(srcFolder)
 
-destinationFolder = "out/"               <- The destination folder that you would like to compile to and create jar in
+destinationFolder = "out/"               $<- The destination folder that you would like to compile to and create jar in
 ```
 
 The script should be placed at the root of the project folder. When you run the script you are prompted with:
