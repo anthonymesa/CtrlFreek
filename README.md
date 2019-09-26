@@ -48,7 +48,7 @@ The script should be placed at the root of the project folder. When you run the 
 Would you like to run the compiled class, or create a jar (r/j)?
 ```
 
-To compile and run your project, type 'r' and hit enter. To compile your class into a .jar, type 'j' and then enter. Currently, the jar option will only successfully create an executable jar if you libraries or dependencies that do not require any native C code (such as any code that would be used with Java Native Interface).
+To compile and run your project, type 'r' and hit enter. To compile your class into a .jar, type 'j' and then enter. Currently, the jar option will only successfully create an executable jar if your libraries or dependencies that do not require any native C code (such as any code that would be used with Java Native Interface).
 
 After that you will be prompted to hit enter once or twice as it runs depending on your choice.
 
