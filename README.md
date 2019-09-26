@@ -1,6 +1,6 @@
 # CtrlFreek
 
-CtrlFreek is a script I made with python to automate the process of compiling java source code in the command line because I do not want to use any IDE's for the time being if I can help it. Taking this approach has given me better insight into what actually needs to take place for proper compiling and jar creation to take place.
+CtrlFreek is a script I made with python to automate the process of compiling java source code in the command line because I do not want to use any IDE's for the time being if I can help it. Taking this approach has given me better insight into the step-by-step process of java compiling and archiving.
 
 =========================================================================
 
