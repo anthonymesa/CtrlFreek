@@ -41,14 +41,15 @@ def appBegin():
     # 'appBegin()' begins the script, prompting the user, and then setting values
     # based off of the folders assigned above, then it prints those lists.
 
-    print(
-    ```
+    a = ```
+    \n\n
     _______ _______  ______        _______  ______ _______ _______ _     _
     |          |    |_____/ |      |______ |_____/ |______ |______ |____/ 
     |_____     |    |    \_ |_____ |       |    \_ |______ |______ |    \_
     ```
-        )
-
+    
+    print(a)
+    
     # Asks user if they would like to compile and run, or compile and create jar.
     global choice
     choice = raw_input("Would you like to run the compiled class, or create a jar (r/j)? ")
