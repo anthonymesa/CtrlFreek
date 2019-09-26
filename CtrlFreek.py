@@ -1,9 +1,9 @@
 #
-# ControlFreak.py is a script that allows me to control EXACTLY how my programs
+# CtrlFreek.py is a script that allows me to control EXACTLY how my programs
 # are compiled. Essentially, all it does is automate the command line with
 # arguments based on the local file structure
 #
-# Control Freak - 0.1.2
+# CtrlFreek - 0.1.2
 # Anthony Mesa
 # 
 
@@ -41,10 +41,13 @@ def appBegin():
     # 'appBegin()' begins the script, prompting the user, and then setting values
     # based off of the folders assigned above, then it prints those lists.
 
-    print("\n\n------------------------------------------------------")
-    print("--------------------CONTROL--FREAK--------------------")
-    print("------------------------------------------------------")
-    print("")
+    print(
+    ```
+    _______ _______  ______        _______  ______ _______ _______ _     _
+    |          |    |_____/ |      |______ |_____/ |______ |______ |____/ 
+    |_____     |    |    \_ |_____ |       |    \_ |______ |______ |    \_
+    ```
+        )
 
     # Asks user if they would like to compile and run, or compile and create jar.
     global choice
