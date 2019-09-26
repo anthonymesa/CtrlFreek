@@ -6,7 +6,7 @@ CtrlFreek is a script I made with python to automate the process of compiling ja
 
 Out of the box, CtrlFreek works with a specific file structure as outlined below:
 
-```bash
+```
 PROJECT_FOLDER_NAME/
 ├───lib
 |     ( All of your downloaded .jar libraries )
@@ -22,27 +22,27 @@ If you choose to use a seperate file structure, you will need to edit the script
 
 ```python
 # Name of the main class file for the application
-applicationName = "Application"          $<- The name of the main entry-point class
-MANIFEST_NAME = "Manifest.txt"           $<- The manifest that is automatically generated and then merged into the MANIFEST.MF
+applicationName = "Application"          #<- The name of the main entry-point class
+MANIFEST_NAME = "Manifest.txt"           #<- The manifest that is automatically generated and then merged into the MANIFEST.MF
 
-libFolder = "lib/*.jar"                  $<- The folder containing all of your downloaded .jar libraries
+libFolder = "lib/*.jar"                  #<- The folder containing all of your downloaded .jar libraries
 librariesList = glob.glob(libFolder)
 
-srcFolder = "src/*.java"                 $<- The folder containing all of your .java source code
+srcFolder = "src/*.java"                 #<- The folder containing all of your .java source code
 sourcesList = glob.glob(srcFolder)
 
-destinationFolder = "out/"               $<- The destination folder that you would like to compile to and create jar in
+destinationFolder = "out/"               #<- The destination folder that you would like to compile to and create jar in
 ```
 
 The script should be placed at the root of the project folder. When you run the script you are prompted with:
 
 ```python
-  .,-::::::::::::::::::::::::..    :::    .-:::::':::::::..  .,:::::: .,::::::  :::  .   
-,;;;'````';;;;;;;;'''';;;;``;;;;   ;;;    ;;;'''' ;;;;``;;;; ;;;;'''' ;;;;''''  ;;; .;;,.
-[[[            [[      [[[,/[[['   [[[    [[[,,==  [[[,/[[['  [[cccc   [[cccc   [[[[[/'  
-$$$            $$      $$$$$$c     $$'    `$$$"``  $$$$$$c    $$""""   $$""""  _$$$$,    
-`88bo,__,o,    88,     888b "88bo,o88oo,.__888     888b "88bo,888oo,__ 888oo,__"888"88o, 
-  "YUMMMMMP"   MMM     MMMM   "W" """"YUMMM"MM,    MMMM   "W" """"YUMMM""""YUMMMMMM "MMP"
+#  .,-::::::::::::::::::::::::..    :::    .-:::::':::::::..  .,:::::: .,::::::  :::  .  
+# ,;;;'````';;;;;;;;'''';;;;``;;;;   ;;;    ;;;'''' ;;;;``;;;; ;;;;'''' ;;;;''''  ;;; .;;,.
+# [[[            [[      [[[,/[[['   [[[    [[[,,==  [[[,/[[['  [[cccc   [[cccc   [[[[[/'  
+# $$$            $$      $$$$$$c     $$'    `$$$"``  $$$$$$c    $$""""   $$""""  _$$$$,    
+# `88bo,__,o,    88,     888b "88bo,o88oo,.__888     888b "88bo,888oo,__ 888oo,__"888"88o, 
+#  "YUMMMMMP"   MMM     MMMM   "W" """"YUMMM"MM,    MMMM   "W" """"YUMMM""""YUMMMMMM "MMP"
 
 
 Would you like to run the compiled class, or create a jar (r/j)?
