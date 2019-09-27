@@ -42,11 +42,10 @@ def appBegin():
     # based off of the folders assigned above, then it prints those lists.
 
     a = """
-    \n\n
     _______ _______  ______        _______  ______ _______ _______ _     _
     |          |    |_____/ |      |______ |_____/ |______ |______ |____/ 
     |_____     |    |    \_ |_____ |       |    \_ |______ |______ |    \_
-    """
+    \n"""
     
     print(a)
     
