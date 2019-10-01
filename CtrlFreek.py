@@ -51,19 +51,19 @@ def appBegin():
     
     # Asks user if they would like to compile and run, or compile and create jar.
     global choice
-    choice = raw_input("Would you like to run the compiled class, or create a jar (r/j)? ")
+    choice = input("Would you like to run the compiled class, or create a jar (r/j)? ")
     while (choice != "j" and choice != "r"):
-        choice = raw_input("Please type r or j:")
+        choice = input("Please type r or j:")
 
     # Determines which osBreak to us ( : vs ; ) based off of current os.
     if platform.system() == "Windows":
-        print "\n", "Formatting for Windows OS", "\n"
+        print("\n", "Formatting for Windows OS", "\n")
         osBreak = ";"
     elif platform.system() == "Darwin":
-        print "\n", "Formatting for Mac OS", "\n"
+        print("\n", "Formatting for Mac OS", "\n")
         osBreak = ":"
     else:
-        print "\n", "Cannont format, Unknown System", "\n"
+        print("\n", "Cannont format, Unknown System", "\n")
     
     # Create a string joined by ":" or ";" (based on os) containing all list entries.
     global compileSourcesList
@@ -74,9 +74,9 @@ def appBegin():
     runningLibrariesList = compileLibrariesList + osBreak + "out/bin"
     
     # Prints user feedback to see what libraries are used.
-    print "Source Code: ", "\n\n\t", "\n\t".join(sourcesList), "\n"
-    print "Compiling Libraries: ", "\n\n\t",  "\n\t".join(librariesList), "\n"
-    print "Running Libraries: ", runningLibrariesList, "\n"
+    print("Source Code: ", "\n\n\t", "\n\t".join(sourcesList), "\n")
+    print("Compiling Libraries: ", "\n\n\t",  "\n\t".join(librariesList), "\n")
+    print("Running Libraries: ", runningLibrariesList, "\n")
 
 def compileSourceCode():
 
@@ -100,7 +100,7 @@ def compileSourceCode():
 def run():
 
     # Runs the compiled code
-    raw_input("Press enter to run...")
+    input("Press enter to run...")
     if exists("out/bin/" + applicationName + ".class"):
         call(["java", "-cp", runningLibrariesList, applicationName])
     else:
@@ -108,7 +108,7 @@ def run():
 
 def createJar():
     
-    raw_input("\nPress enter to begin extracting jars...")
+    input("\nPress enter to begin extracting jars...")
     # Create new folders in 'out' for all of the jars in 'lib'
     for each in librariesList:
         # Take the location of the jar file and reformat it to a single name
