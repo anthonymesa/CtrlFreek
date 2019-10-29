@@ -27,6 +27,8 @@ from tkinter import ttk
 from tkinter import filedialog
 from tkinter import*
 from subprocess import call
+from subprocess import Popen
+import subprocess as sub
 from os import remove
 from os import rmdir
 from shutil import rmtree
@@ -35,9 +37,6 @@ from os.path import exists
 import time
 import platform
 import glob
-
-# Initialize tKinter
-root = tk.Tk()
 
 # Set variables for Java run/compile
 applicationName = "Application"
@@ -52,7 +51,19 @@ manifestFolders = []
 librariesList = []
 sourcesList = []
 
-def appBegin(projectLocation):
+output = ""
+projectLocation = ""
+
+# Initialize tKinter
+root = tk.Tk()
+
+def toConsole(input):
+    process = Popen(input, stdout=sub.PIPE, stderr=sub.PIPE, shell=True, universal_newlines=True, cwd=projectLocation)
+    output = process.communicate()
+    console.insert(END, output[0])
+    console.insert(END, output)
+
+def appBegin():
 
     """
     Sets up variables before Java compiling begins
@@ -89,12 +100,16 @@ def appBegin(projectLocation):
     global runningLibrariesList
     runningLibrariesList = compileLibrariesList + osBreak + projectLocation + "/bin"
     
-    # Display source and libraries
-    print("Source Code: \n\n\t" + "\n\t".join(sourcesList) + "\n")
-    print("Compiling Libraries: " + "\n\n\t" + "\n\t".join(librariesList) + "\n")
-    print("Running Libraries: " + runningLibrariesList + "\n")
+    toConsole("echo '\nSource Code:'")
+    for each in sourcesList:
+        toConsole("echo '\n\t'" + each)
 
-def compileSourceCode(projectLocation):
+    for each in librariesList:
+        toConsole("echo '\n\t'" + each)
+
+    toConsole("echo '\nRunning Libraries:\n\n'" + runningLibrariesList + "\n")
+
+def compileSourceCode():
     
     """
     Compile Java source code by calling Javac
@@ -104,22 +119,28 @@ def compileSourceCode(projectLocation):
     """
 
     # If bin directory from prior compile exists, delete
-    print("deleting old bin directory...")
+    toConsole("echo '\nDeleting old bin directory...'")
+
     start_time = time.time()
     if exists(projectLocation + "/bin/" + applicationName + ".class"):
         rmtree(projectLocation + "/bin/")
-    print("deleted bin in %f" % (time.time() - start_time))
+    runTime = time.time() - start_time
+
+    toConsole("echo '\nDeleted bin in '" + str(runTime) + " seconds")
 
     # Sets sources and classes (for readability's sake)
     sources = compileSourcesList
+    print(sources)
     classes = compileLibrariesList
 
     # Creates bin folder if there is none and calls javac
     if not exists(projectLocation + "/bin/"):
         mkdir(projectLocation + "/bin/")
-    call(["javac", sources, "-classpath", classes, "-d", "bin/"], cwd=projectLocation)
+    toConsole("javac " + sources + " -classpath " + classes + " -d bin/")
+    #print("javac " + sources + " -classpath " + classes + " -d bin/")
+    #call(["javac", sources, "-classpath", classes, "-d", "/bin/"], cwd=projectLocation, shell=True)
     
-def run(projectLocation):
+def run():
     
     """
     Run previously compiled Java program by calling command of same name
@@ -136,7 +157,7 @@ def run(projectLocation):
     else:
         print("\nMain class wasnt compiled, end of script.\n")
 
-def createJar(projectLocation):
+def createJar():
 
     """
     Create Java Executable JAR
@@ -191,7 +212,7 @@ def createJar(projectLocation):
     # Runs JAR command to archive project using arguments set above
     call(["jar", arguments, jar_file_name, manifest_file, "-C", c_dir, "."], cwd=projectLocation)
 
-def compileCpp(projectLocation):
+def compileCpp():
 
     """
     Compiles C++ code by running CMake
@@ -223,7 +244,7 @@ def compileCpp(projectLocation):
     else:
         print("\n", "Cannont format, Unknown System", "\n")
 
-def compile(projectLocation):
+def compile():
     
     """
     Compiles C++ code by running CMake
@@ -232,24 +253,29 @@ def compile(projectLocation):
     projectLocation -- String containing the desired project working directory
     """
     
+    if projectLocation == "":
+        process = Popen("echo 'Choose a working directory'", stdout=sub.PIPE, shell=True, universal_newlines=True)
+        output = process.communicate()
+        console.insert(END, output[0])
+
     # If user has chosen run Java, compile and run
     if v.get() == 1:
-        appBegin(projectLocation)
-        compileSourceCode(projectLocation)
-        run(projectLocation)
+        appBegin()
+        compileSourceCode()
+        #run()
 
     # if user has chosen archive Java, compile and archive
     elif v.get() == 2:
-        appBegin(projectLocation)
-        compileSourceCode(projectLocation)
-        createJar(projectLocation)
+        appBegin()
+        compileSourceCode()
+        createJar()
 
     # if user has chosen compile C++, compile and build
     elif v.get() == 3:
-        compileCpp(projectLocation)
+        compileCpp()
 
     else:
-        print("no choice made")
+        toConsole("echo 'No choice made'")
 
 #==================================================================================
 
@@ -263,6 +289,8 @@ def askForDirectory():
     When directory button is pressed, prompts user for directory
     """
     newDirectory.set(filedialog.askdirectory())
+    global projectLocation
+    projectLocation = newDirectory.get()
 
 a = """
 _______ _______  ______        _______  ______ _______ _______ _     _
@@ -286,7 +314,7 @@ newDirectory.set("Select Project Folder")
 
 directoryFrame = Frame(root)
 
-directoryButton = tk.Button(directoryFrame, text="...", justify = tk.CENTER, command=askForDirectory)
+directoryButton = tk.Button(directoryFrame, text="...", justify = tk.CENTER, command= lambda: askForDirectory())
 directoryButton.configure(highlightbackground='#2b2b2b', anchor='center')
 directoryButton.grid(row=0, column=0)
 
@@ -312,12 +340,12 @@ radio3.config(background='#2b2b2b', fg='white', anchor='w')
 radio3.grid(row=0, column=2)
 
 if platform.system() == "Windows":
-    compileButton = tk.Button(compileOptions, text="CONTROL", justify = tk.CENTER, command= lambda: compile(newDirectory.get()))
+    compileButton = tk.Button(compileOptions, text="CONTROL", justify = tk.CENTER, command= lambda: compile())
     compileButton.configure(background="#e96d5d")
     compileButton.grid(row=0, column=3, sticky=W+E+N+S)
 
 if platform.system() == "Darwin":
-    compileButton = tk.Button(compileOptions, text="CONTROL", justify = tk.CENTER, command= lambda: compile(newDirectory.get()))
+    compileButton = tk.Button(compileOptions, text="CONTROL", justify = tk.CENTER, command= lambda: compile())
     compileButton.configure(highlightbackground="#e96d5d", fg="Black", highlightthickness=30)
     compileButton.grid(row=0, column=3, sticky=W+E+N+S)
 
@@ -325,6 +353,9 @@ compileOptions.configure(background='#2b2b2b')
 compileOptions.grid(row=2, sticky=W+E+N+S, padx=20, pady=(0, 10))
 
 compileOptions.columnconfigure(3, weight=1)
+
+console = tk.Text(font=('TkFixedFont', 12))
+console.grid(row=4, sticky=W+E+N+S)
 
 root.configure(background='#2b2b2b')
 
