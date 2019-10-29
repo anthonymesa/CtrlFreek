@@ -59,7 +59,7 @@
 				<key>ActionParameters</key>
 				<dict>
 					<key>COMMAND_STRING</key>
-					<string>python /Applications/CtrlFreek/CtrlFreekV2.py </string>
+					<string>python /Applications/CtrlFreek/CtrlFreek.py </string>
 					<key>CheckedForUserDefaultShell</key>
 					<true/>
 					<key>inputMethod</key>
