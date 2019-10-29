@@ -87,12 +87,12 @@ def appBegin(projectLocation):
     global compileLibrariesList
     compileLibrariesList = osBreak.join(librariesList)
     global runningLibrariesList
-    runningLibrariesList = compileLibrariesList + osBreak + projectLocation + "/build/bin"
+    runningLibrariesList = compileLibrariesList + osBreak + projectLocation + "/bin"
     
     # Display source and libraries
     print("Source Code: \n\n\t" + "\n\t".join(sourcesList) + "\n")
-    print("Compiling Libraries: ", "\n\n\t",  "\n\t".join(librariesList), "\n")
-    print("Running Libraries: ", runningLibrariesList, "\n")
+    print("Compiling Libraries: " + "\n\n\t" + "\n\t".join(librariesList) + "\n")
+    print("Running Libraries: " + runningLibrariesList + "\n")
 
 def compileSourceCode(projectLocation):
     
@@ -106,8 +106,8 @@ def compileSourceCode(projectLocation):
     # If bin directory from prior compile exists, delete
     print("deleting old bin directory...")
     start_time = time.time()
-    if exists("bin/" + applicationName + ".class"):
-        rmtree("bin/")
+    if exists(projectLocation + "/bin/" + applicationName + ".class"):
+        rmtree(projectLocation + "/bin/")
     print("deleted bin in %f" % (time.time() - start_time))
 
     # Sets sources and classes (for readability's sake)
@@ -115,10 +115,10 @@ def compileSourceCode(projectLocation):
     classes = compileLibrariesList
 
     # Creates bin folder if there is none and calls javac
-    if not exists("bin/"):
-        mkdir("bin/")
+    if not exists(projectLocation + "/bin/"):
+        mkdir(projectLocation + "/bin/")
     call(["javac", sources, "-classpath", classes, "-d", "bin/"], cwd=projectLocation)
-
+    
 def run(projectLocation):
     
     """
@@ -129,8 +129,9 @@ def run(projectLocation):
     """
 
     # If the main class exists, run the Java class
-    input("Press enter to run...")
-    if exists("bin/" + applicationName + ".class"):
+    # input("Press enter to run...")
+    print(projectLocation + "/bin/" + applicationName + ".class")
+    if exists(projectLocation + "/bin/" + applicationName + ".class"):
         call(["java", "-cp", runningLibrariesList, applicationName], cwd=projectLocation)
     else:
         print("\nMain class wasnt compiled, end of script.\n")
@@ -273,40 +274,57 @@ v = tk.IntVar()
 style = ttk.Style()
 style.theme_use('classic')
 
+root.resizable(False, False)
+
 style.configure("Fixed.TLabel", font='TkFixedFont')
 headerLabel = ttk.Label(root, text=a, justify = tk.CENTER, style="Fixed.TLabel")
-headerLabel.configure(background='#1f1f1f', foreground='white')
-headerLabel.grid(row=0, columnspan=2)
+headerLabel.configure(background='#1f1f1f', foreground='#e96d5d', anchor="center")
+headerLabel.grid(row=0, sticky=W+E+N+S, ipady=40, ipadx=40, pady=(0, 10))
 
 newDirectory = tk.StringVar()
 newDirectory.set("Select Project Folder")
 
-directoryButton = tk.Button(root, text="...", justify = tk.LEFT, command=askForDirectory)
-directoryButton.configure(highlightbackground='#2b2b2b')
-directoryButton.grid(row=1, column=0)
+directoryFrame = Frame(root)
 
-directoryLabel = ttk.Label(root, textvariable=newDirectory, justify = tk.LEFT, style="Fixed.TLabel")
-directoryLabel.configure(background='#2b2b2b', foreground='white')
-directoryLabel.grid(row=1, column=1, sticky=W+E)
+directoryButton = tk.Button(directoryFrame, text="...", justify = tk.CENTER, command=askForDirectory)
+directoryButton.configure(highlightbackground='#2b2b2b', anchor='center')
+directoryButton.grid(row=0, column=0)
 
-radio1 = tk.Radiobutton(root, text="Java run", variable=v, value=1)
-radio1.configure(background='#2b2b2b', foreground='white')
-radio1.grid(row=2, column=0)
+directoryLabel = ttk.Label(directoryFrame, textvariable=newDirectory, justify = tk.LEFT, style="Fixed.TLabel")
+directoryLabel.configure(background='white', foreground='#2b2b2b', width=70)
+directoryLabel.grid(row=0, column=1, sticky=W+E+N+S, pady=0)
 
-radio2 = tk.Radiobutton(root, text="Java .jar", variable=v, value=2)
-radio2.configure(background='#2b2b2b', foreground='white')
-radio2.grid(row=3, column=0)
+directoryFrame.configure(background='#2b2b2b')
+directoryFrame.grid(row=1, columnspan=4, sticky=W+E+N+S, padx=20, pady=(0, 10))
 
-radio3 = tk.Radiobutton(root, text="C++", variable=v, value=3)
-radio3.configure(background='#2b2b2b', foreground='white')
-radio3.grid(row=4, column=0)
+compileOptions = Frame(root)
 
-compileButton = tk.Button(root, text="CONTROL", justify = tk.CENTER, padx = 20, pady = 20, command= lambda: compile(newDirectory.get()))
-compileButton.configure(highlightbackground='#2b2b2b')
-compileButton.grid(row=2, column=1, rowspan=3, sticky=W+E+N+S)
+radio1 = tk.Radiobutton(compileOptions, text="Java run", variable=v, value=1)
+radio1.config(background='#2b2b2b', fg='white', anchor='w')
+radio1.grid(row=0, column=0)
 
-root.columnconfigure(1, weight=15)
-root.rowconfigure(0, weight=10, pad=10)
+radio2 = tk.Radiobutton(compileOptions, text="Java .jar", variable=v, value=2)
+radio2.config(background='#2b2b2b', fg='white', anchor='w')
+radio2.grid(row=0, column=1)
+
+radio3 = tk.Radiobutton(compileOptions, text="C++", variable=v, value=3)
+radio3.config(background='#2b2b2b', fg='white', anchor='w')
+radio3.grid(row=0, column=2)
+
+if platform.system() == "Windows":
+    compileButton = tk.Button(compileOptions, text="CONTROL", justify = tk.CENTER, command= lambda: compile(newDirectory.get()))
+    compileButton.configure(background="#e96d5d")
+    compileButton.grid(row=0, column=3, sticky=W+E+N+S)
+
+if platform.system() == "Darwin":
+    compileButton = tk.Button(compileOptions, text="CONTROL", justify = tk.CENTER, command= lambda: compile(newDirectory.get()))
+    compileButton.configure(highlightbackground="#e96d5d", fg="Black", highlightthickness=30)
+    compileButton.grid(row=0, column=3, sticky=W+E+N+S)
+
+compileOptions.configure(background='#2b2b2b')
+compileOptions.grid(row=2, sticky=W+E+N+S, padx=20, pady=(0, 10))
+
+compileOptions.columnconfigure(3, weight=1)
 
 root.configure(background='#2b2b2b')
 
