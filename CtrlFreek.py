@@ -238,8 +238,8 @@ def compileCpp():
 
     elif platform.system() == "Darwin":
 
-        call(["cmake", "-B", "bin", "-G", "Xcode"], cwd=projectLocation, shell=True)
-        call(["cmake", "--build", "bin", "--config", "Release"], cwd=projectLocation, shell=True)
+        call(["cmake -B bin -G Xcode"], cwd=projectLocation, shell=True)
+        call(["cmake --build bin --config Release"], cwd=projectLocation, shell=True)
 
     else:
         print("\n", "Cannont format, Unknown System", "\n")
