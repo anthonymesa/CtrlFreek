@@ -221,25 +221,37 @@ def compileCpp():
     projectLocation -- String containing the desired project working directory
     """
 
-    # If folders exist from previous build, delete
-    if exists(projectLocation + "/build"):
-        print("deleting build")
-        rmtree(projectLocation + "/build")
-    if exists(projectLocation + "/bin"):
-        print("deleting bin")
-        rmtree(projectLocation + "/bin")
-
     # Chooses appropriate operating system
     if platform.system() == "Windows":
+        
+        # If folders exist from previous build, delete
+        if exists(projectLocation + "/build/win/"):
+            print("Deleting Windows Build Folder...")
+            rmtree(projectLocation + "/build/win/")
+        if exists(projectLocation + "/bin/win/"):
+            print("Deleting Windows Bin Folder...")
+            rmtree(projectLocation + "/bin/win/")
 
         # call CMake
-        call(["D:/compile/winCompile/cmake-3.16.0-rc2-win64-x64/bin/cmake.exe", "-B", "bin", "-G", "Visual Studio 16 2019"], cwd=projectLocation)
-        call(["D:/compile/winCompile/cmake-3.16.0-rc2-win64-x64/bin/cmake.exe", "--build", "bin", "--config", "Release"], cwd=projectLocation)
+        call(["D:/compile/winCompile/cmake-3.16.0-rc2-win64-x64/bin/cmake.exe", "-B", "bin/win", "-G", "Visual Studio 16 2019"], cwd=projectLocation)
+        print("\n\n\tCMAKE COMPILE CALL COMPLETE\n\n")
+        call(["D:/compile/winCompile/cmake-3.16.0-rc2-win64-x64/bin/cmake.exe", "--build", "bin/win", "--config", "Release"], cwd=projectLocation)
+        print("\n\n\tCMAKE BUILD CALL COMPLETE\n\n")
 
     elif platform.system() == "Darwin":
 
-        call(["cmake -B bin -G Xcode"], cwd=projectLocation, shell=True)
-        call(["cmake --build bin --config Release"], cwd=projectLocation, shell=True)
+        # If folders exist from previous build, delete
+        if exists(projectLocation + "/build/mac"):
+            print("Deleting Mac Build Folder...")
+            rmtree(projectLocation + "/build/mac")
+        if exists(projectLocation + "/bin/mac"):
+            print("Deleting Mac Bin Folder...")
+            rmtree(projectLocation + "/bin/mac")
+
+        call(["cmake -B bin/mac -G Xcode"], cwd=projectLocation, shell=True)
+        print("\n\n\tCMAKE COMPILE CALL COMPLETE\n\n")
+        call(["cmake --build bin/mac --config Release"], cwd=projectLocation, shell=True)
+        print("\n\n\tCMAKE BUILD CALL COMPLETE\n\n")
 
     else:
         print("\n", "Cannont format, Unknown System", "\n")
