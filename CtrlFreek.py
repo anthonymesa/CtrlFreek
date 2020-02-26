@@ -80,25 +80,24 @@ def appBegin():
     running_libraries_list = compile_liraries_list + osBreak + project_location + "/bin"
 
 def compileSourceCode():
-
     start_time = time.time()
-    if exists(project_location + "/bin/" + application_name + ".class"):
-        rmtree(project_location + "/bin/")
+    if exists(project_location + "/out/"):
+        rmtree(project_location + "/out/")
     runTime = time.time() - start_time
 
     sources = compile_sources_list
     print(sources)
     classes = compile_liraries_list
 
-    if not exists(project_location + "/bin/"):
-        mkdir(project_location + "/bin/")
-        call(["javac", sources, "-classpath", classes, "-d", "/bin/"], cwd=project_location, shell=True)
+    if not exists(project_location + "/out/"):
+        mkdir(project_location + "/out/")
+        call(["javac", "-cp", classes, "-d", "out/", sources], cwd=project_location, shell=True)
     
 def run():
 
-    print(project_location + "/bin/" + application_name + ".class")
-    if exists(project_location + "/bin/" + application_name + ".class"):
-        call(["java", "-cp", running_libraries_list, application_name], cwd=project_location)
+    print(project_location + "/out/" + application_name + ".class")
+    if exists(project_location + "/out/" + application_name + ".class"):
+        call(["java", "-cp", "out", application_name], cwd=project_location)
     else:
         print("\nMain class wasnt compiled, end of script.\n")
 
