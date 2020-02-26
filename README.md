@@ -73,7 +73,7 @@ Options:
 
 To compile, type your indicator and just hit enter, and hope that you have no compilation errors. :")
 
-Currently, the jar option will only successfully create an executable jar if your libraries or dependencies that do not require any native C code (such as any code that would be used with Java Native Interface).
+Currently, the jar option will only successfully create an executable jar if your libraries or dependencies do not require any native C code (such as any code that would be used with Java Native Interface).
 
 ## Plans for the future:
 * Add Native C code inclusion into executable jar
