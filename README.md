@@ -1,54 +1,82 @@
 # CtrlFreek
 
-CtrlFreek is a script I made with python to automate the process of compiling java source code in the command line because I do not want to use any IDE's for the time being if I can help it. Taking this approach has given me better insight into the step-by-step process of java compiling and archiving.
+CtrlFreek is a script I made with python to automate the process of compiling Java and C++ source code in the command line because I do not want to use any IDE's for the time being if I can help it. Taking this approach has given me better insight into the step-by-step process of Java and C++ compilation (as well as beginner Python development).
 
 =========================================================================
 
-Out of the box, CtrlFreek works with a specific file structure as outlined below:
+Out of the box, CtrlFreek works with a specific base file structure as outlined below:
 
 ```
-PROJECT_FOLDER_NAME/
-├───lib
-|     ( All of your downloaded .jar libraries )
-├───src
-|     ( All of your source files )
-├───bin
-|     ( The .java compiled source code )
-└───out
-      ( The final destination folder )
+JAVA_PROJECT_FOLDER/
+├─── lib (All of your downloaded .jar libraries)
+├─── src (All of your project source files)
+├─── res (All of your project resources)
+└─── out (The final destination folder )
 ```
 
-If you choose to use a seperate file structure, you will need to edit the script itself, by changing the variable paths:
-
-```python
-# Name of the main class file for the application
-applicationName = "Application"          #<- The name of the main entry-point class
-MANIFEST_NAME = "Manifest.txt"           #<- The manifest that is automatically generated and then merged into the MANIFEST.MF
-
-libFolder = "lib/*.jar"                  #<- The folder containing all of your downloaded .jar libraries
-librariesList = glob.glob(libFolder)
-
-srcFolder = "src/*.java"                 #<- The folder containing all of your .java source code
-sourcesList = glob.glob(srcFolder)
-
-destinationFolder = "out/"               #<- The destination folder that you would like to compile to and create jar in
+```
+C++_PROJECT_FOLDER/
+├─── lib (All of your included libraries)
+├─── src (All of your project source files)
+├─── res (All of your project resources)
+├─── bin (The compiling destination folder)
+├─── build (The linking destination folder)
+└─── CMakeLists.txt
 ```
 
-The script should be placed at the root of the project folder. When you run the script you are prompted with:
+As you can see compiling C++ uses CMake in this case so...
 
+## Dependencies
+
+I have not added multiple compiler options or anything like that so to use CtrlFreek out of the box without any issues you will need:
+
+Installed:
+- Python3
+- Visual Studio 16 2019 or Xcode
+- CMake 3.16.0-rc2-win64-x64
+- Java Development Kit
+
+To use different compilers or different versions of the software listed, you must edit the calls to CMake in the script:
 ```
-_______ _______  ______        _______  ______ _______ _______ _     _
-|          |    |_____/ |      |______ |_____/ |______ |______ |____/ 
-|_____     |    |    \_ |_____ |       |    \_ |______ |______ |    \_
+# Call CMAKE for visual studio to generate BIN
+call([path + "/Compiling_Tools/winCompile/cmake-3.16.0-rc2-win64-x64/bin/cmake.exe", "-B", "bin/win", "-G", "Visual Studio 16 2019"], cwd=project_location)
+print("\n\n\tCMAKE COMPILE CALL COMPLETE\n\n")
 
+# Call CMAKE for visual studio to generate BUILD
+call([path + "/Compiling_Tools/winCompile/cmake-3.16.0-rc2-win64-x64/bin/cmake.exe", "--build", "bin/win", "--config", "Release"], cwd=project_location)
+print("\n\n\tCMAKE BUILD CALL COMPLETE\n\n")
+```
+YOU WILL NEED TO EDIT THIS AT LEAST ONCE TO POINT TO YOUR CMAKE INSTALLATION (I may include automatic detection in the future).
 
-Would you like to run the compiled class, or create a jar (r/j)?
+You will also need to edit the compilers for the CMakeLists variable in the script (for generating new projects).
+
+## Execution
+
+When you run the script you are prompted with:
+```
+===========================================================================
+|   CTRLFREEK   |             x | j | r | c | n | d | help                |
+===========================================================================
+```
+The commands are as follows:
+```
+Options:
+
+    x   Exit Program
+    j   Compile Java to class
+    r   Compile Java to .Jar
+    c   Compile Cpp project
+    d   Set current project directory
+
+    n[j or c]   Create new project for Java or Cpp
 ```
 
-To compile and run your project, type 'r' and hit enter. To compile your class into a .jar, type 'j' and then enter. Currently, the jar option will only successfully create an executable jar if your libraries or dependencies that do not require any native C code (such as any code that would be used with Java Native Interface).
+To compile, type your indicator and just hit enter, and hope that you have no compilation errors. :")
 
-After that you will be prompted to hit enter once or twice as it runs depending on your choice.
+Currently, the jar option will only successfully create an executable jar if your libraries or dependencies that do not require any native C code (such as any code that would be used with Java Native Interface).
 
 ## Plans for the future:
 * Add Native C code inclusion into executable jar
 * Test and update as requred for compiling and archiving larger and more complicated projects
+* Add Java Package directory defaults
+* Add automatic CMake detection
